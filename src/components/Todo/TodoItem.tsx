@@ -7,7 +7,7 @@ interface TodoItemProps {
     id: string;
     toggleDone: (id: string, done: boolean) => void;
     handleDelete: (id: string) => void;
-    number: number; // Добавляем свойство number для порядкового номера
+    number: number;
 }
 
 const TodoItem = ({
@@ -16,7 +16,7 @@ const TodoItem = ({
                       id,
                       toggleDone,
                       handleDelete,
-                      number, // Получаем свойство number
+                      number,
                   }: TodoItemProps) => {
     return (
         <Box
@@ -35,7 +35,7 @@ const TodoItem = ({
                         color: done ? "#888" : "inherit",
                     }}
                 >
-                    {number}. {/* Отображаем порядковый номер задачи */}
+                    {number}.
                 </Typography>
                 <Checkbox
                     defaultChecked={done}
