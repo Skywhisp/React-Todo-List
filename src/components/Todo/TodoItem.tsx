@@ -4,16 +4,14 @@ import DeleteIcon from "@mui/icons-material/Delete";
 interface TodoItemProps {
     name: string;
     done: boolean;
-    id: string;
-    toggleDone: (id: string, done: boolean) => void;
-    handleDelete: (id: string) => void;
+    toggleDone: () => void;
+    handleDelete: () => void;
     number: number;
 }
 
 const TodoItem = ({
                       name,
                       done,
-                      id,
                       toggleDone,
                       handleDelete,
                       number,
@@ -38,8 +36,8 @@ const TodoItem = ({
                     {number}.
                 </Typography>
                 <Checkbox
-                    defaultChecked={done}
-                    onChange={() => toggleDone(id, !done)}
+                    checked={done}
+                    onChange={toggleDone}
                     sx={{ marginRight: "8px" }}
                 />
                 <Typography
@@ -52,7 +50,7 @@ const TodoItem = ({
                 </Typography>
             </Box>
             <IconButton
-                onClick={() => handleDelete(id)}
+                onClick={handleDelete}
                 aria-label="delete"
                 size="large"
                 sx={{

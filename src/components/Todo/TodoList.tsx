@@ -1,7 +1,12 @@
 import React from 'react';
 import { Box } from '@mui/material';
-import { Todo } from '../../App';
 import TodoItem from './TodoItem';
+
+interface Todo {
+    name: string;
+    done: boolean;
+    id: string;
+}
 
 interface TodoListProps {
     todos: Todo[];
@@ -10,8 +15,8 @@ interface TodoListProps {
 }
 
 const TodoList: React.FC<TodoListProps> = ({ todos, toggleDone, handleDelete }) => {
-    const sortedTodos = [...todos];
-    sortedTodos.sort((a, b) => (a.done && !b.done ? 1 : b.done && !a.done ? -1 : 0));
+    const sortedTodos = [...todos].sort((a, b) => (a.done && !b.done
+        ? 1 : b.done && !a.done ? -1 : 0));
 
     return (
         <Box>
@@ -20,9 +25,8 @@ const TodoList: React.FC<TodoListProps> = ({ todos, toggleDone, handleDelete }) 
                     key={todo.id}
                     name={todo.name}
                     done={todo.done}
-                    id={todo.id}
-                    toggleDone={toggleDone}
-                    handleDelete={handleDelete}
+                    toggleDone={() => toggleDone(todo.id, !todo.done)}
+                    handleDelete={() => handleDelete(todo.id)}
                     number={index + 1}
                 />
             ))}

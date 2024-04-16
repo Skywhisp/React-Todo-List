@@ -1,4 +1,4 @@
-import {FormEvent, useState} from "react";
+import {FormEvent, useEffect, useState} from "react";
 import { Grid } from "@mui/material";
 import { v4 as uuidv4 } from 'uuid'
 import TodoForm from "./components/Todo/TodoForm.tsx";
@@ -14,6 +14,13 @@ export interface Todo {
 function App() {
     const [todos, setTodos] = useState<Todo[]>([]);
 
+    useEffect(() => {
+        const storedTodos = localStorage.getItem("todos");
+        if (storedTodos) {
+            setTodos(JSON.parse(storedTodos));
+        }
+    }, []);
+
     const handleSubmit = (e: FormEvent<HTMLFormElement>, value: string) => {
         e.preventDefault();
         const newTodo = {
@@ -21,22 +28,32 @@ function App() {
             done: false,
             id: uuidv4(),
         };
-        setTodos((todos) => [...todos, newTodo]);
+        setTodos((prevTodos) => {
+            const updatedTodos = [...prevTodos, newTodo];
+            localStorage.setItem("todos", JSON.stringify(updatedTodos));
+            return updatedTodos;
+        });
     };
 
     const toggleDoneTodo = (id: string, done: boolean) => {
-        setTodos((todos) =>
-            todos.map((t) => {
-                if (t.id === id) {
-                    t.done = done;
+        setTodos((prevTodos) => {
+            const updatedTodos = prevTodos.map((todo) => {
+                if (todo.id === id) {
+                    return {...todo, done: done};
                 }
-                return t;
-            })
-        );
+                return todo;
+            });
+            localStorage.setItem("todos", JSON.stringify(updatedTodos));
+            return updatedTodos;
+        });
     };
 
     const handleDeleteTodo = (id: string) => {
-        setTodos((todos) => todos.filter((t) => t.id !== id));
+        setTodos((prevTodos) => {
+            const updatedTodos = prevTodos.filter((todo) => todo.id !== id);
+            localStorage.setItem("todos", JSON.stringify(updatedTodos));
+            return updatedTodos;
+        });
     };
 
     return (

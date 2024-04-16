@@ -1,6 +1,6 @@
 import { render, fireEvent } from "@testing-library/react";
 import '@testing-library/jest-dom';
-import TodoForm from "../components/Todo/TodoForm.tsx";
+import TodoForm from "../../components/Todo/TodoForm.tsx";
 
 test("отправка формы с пустым вводом отображает сообщение об ошибке", () => {
     const handleSubmit = jest.fn();

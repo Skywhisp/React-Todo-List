@@ -2,20 +2,21 @@ import React, { FormEvent, useState } from "react";
 import { Box, Button, FormControl, Grid, TextField } from "@mui/material";
 import AddIcon from '@mui/icons-material/Add';
 
-const TodoForm = ({
-                      handleSubmit,
-                  }: {
+interface TodoFormProps {
     handleSubmit: (e: FormEvent<HTMLFormElement>, value: string) => void;
-}) => {
+}
+
+const TodoForm: React.FC<TodoFormProps> = ({ handleSubmit }) => {
     const [newTodoName, setNewTodoName] = useState("");
     const [error, setError] = useState(false);
 
     const handleFormSubmit = (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        if (newTodoName.trim() === "") {
+        const value = newTodoName.trim();
+        if (value === "") {
             setError(true);
         } else {
-            handleSubmit(e, newTodoName);
+            handleSubmit(e, value);
             setNewTodoName("");
             setError(false);
         }
