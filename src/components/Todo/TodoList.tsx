@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Box } from '@mui/material';
 import TodoItem from './TodoItem';
 
@@ -12,11 +12,12 @@ interface TodoListProps {
     todos: Todo[];
     toggleDone: (id: string, done: boolean) => void;
     handleDelete: (id: string) => void;
+    handleSave: (id: string, newName: string) => void;
 }
 
-const TodoList: React.FC<TodoListProps> = ({ todos, toggleDone, handleDelete }) => {
-    const sortedTodos = [...todos].sort((a, b) => (a.done && !b.done
-        ? 1 : b.done && !a.done ? -1 : 0));
+const TodoList: React.FC<TodoListProps> = ({ todos, toggleDone, handleDelete, handleSave }) => {
+    const sortedTodos = useMemo(() => [...todos].sort((a, b) => (a.done && !b.done
+        ? 1 : b.done && !a.done ? -1 : 0)), [todos]);
 
     return (
         <Box>
@@ -28,6 +29,7 @@ const TodoList: React.FC<TodoListProps> = ({ todos, toggleDone, handleDelete }) 
                     toggleDone={() => toggleDone(todo.id, !todo.done)}
                     handleDelete={() => handleDelete(todo.id)}
                     number={index + 1}
+                    setName={(newName) => handleSave(todo.id, newName)}
                 />
             ))}
         </Box>
