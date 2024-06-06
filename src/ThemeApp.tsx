@@ -9,8 +9,8 @@ interface ThemeAppProps {
 function ThemeApp({ children }: ThemeAppProps) {
     const [theme, setTheme] = useState(createTheme());
 
-    useEffect(() => {
-        const prefersDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    useEffect((): void => {
+        const prefersDarkMode: boolean = window.matchMedia('(prefers-color-scheme: dark)').matches;
 
         const muiTheme = createTheme({
             palette: {

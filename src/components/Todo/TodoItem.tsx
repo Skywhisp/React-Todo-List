@@ -25,14 +25,14 @@ const TodoItem: React.FC<TodoItemProps> = ({
     const [editing, setEditing] = useState(false);
     const [editedName, setEditedName] = useState(name);
 
-    const handleToggleEdit = () => {
+    const handleToggleEdit = (): void => {
         if (editing) {
             setName(editedName);
         }
         setEditing(!editing);
     }
 
-    const handleSave = () => {
+    const handleSave = (): void => {
         setName(editedName);
         setEditing(false);
     }
@@ -49,9 +49,7 @@ const TodoItem: React.FC<TodoItemProps> = ({
         >
 
             <label htmlFor={`todo-checkbox-${number}`}>
-
                 <Box sx={{display: 'flex', alignItems: 'center'}}>
-
                     <Typography
                         sx={{
                             marginRight: '8px',
@@ -84,13 +82,9 @@ const TodoItem: React.FC<TodoItemProps> = ({
                             {name}
                         </Typography>
                     )}
-
                 </Box>
-
             </label>
-
             <Box sx={{display: 'flex'}}>
-
                 <IconButton onClick={editing ? handleSave : handleToggleEdit}>
                     {editing ? <SaveIcon /> : <EditIcon />}
                 </IconButton>
@@ -98,12 +92,9 @@ const TodoItem: React.FC<TodoItemProps> = ({
                 <IconButton onClick={handleDelete}>
                     <DeleteIcon />
                 </IconButton>
-
             </Box>
-
         </Box>
     );
-
 };
 
 export default TodoItem;

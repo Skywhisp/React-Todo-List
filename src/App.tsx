@@ -1,37 +1,19 @@
 import { FormEvent, useEffect, useMemo, useState } from "react";
 import { Grid, IconButton } from "@mui/material";
 import { GitHub } from "@mui/icons-material";
-import firebase from "firebase/compat/app";
-import "firebase/compat/firestore";
+import { db } from "./firebase/firebase.ts";
 import { v4 as uuidv4 } from "uuid";
+import { Todo } from "./types/Todo.ts";
+import Header from "./components/Header/Header.tsx";
 import TodoForm from "./components/Todo/TodoForm.tsx";
 import Summary from "./components/Summary/Summary.tsx";
 import TodoList from "./components/Todo/TodoList.tsx";
-import Header from "./components/Header.tsx";
-
-const firebaseConfig = {
-    apiKey: "AIzaSyCUivtHUxdML3ibn2M7owF5KJodjmPb3LU",
-    authDomain: "react-todo-list-3686c.firebaseapp.com",
-    projectId: "react-todo-list-3686c",
-    storageBucket: "react-todo-list-3686c.appspot.com",
-    messagingSenderId: "635350516091",
-    appId: "1:635350516091:web:e644c66fd1d38892893dde"
-};
-
-firebase.initializeApp(firebaseConfig);
-const db = firebase.firestore();
-
-export interface Todo {
-    name: string;
-    done: boolean;
-    id: string;
-}
 
 function App() {
     const [todos, setTodos] = useState<Todo[]>([]);
 
-    useEffect(() => {
-        const fetchData = async () => {
+    useEffect((): void => {
+        const fetchData = async (): Promise<void> => {
             try {
                 const snapshot = await db.collection("todos").get();
                 const todosData: Todo[] = snapshot.docs.map((doc) => ({
@@ -46,7 +28,7 @@ function App() {
         fetchData();
     }, []);
 
-    const handleSubmit = async (e: FormEvent<HTMLFormElement>, value: string) => {
+    const handleSubmit = async (e: FormEvent<HTMLFormElement>, value: string): Promise<void> => {
         e.preventDefault();
         const newTodo = {
             name: value,
@@ -54,17 +36,17 @@ function App() {
         };
         try {
             await db.collection("todos").add(newTodo);
-            setTodos((prevTodos) => [...prevTodos, { ...newTodo, id: uuidv4() }]);
+            setTodos((prevTodos: Todo[]) => [...prevTodos, { ...newTodo, id: uuidv4() }]);
         } catch (error) {
             console.error("Error adding todo: ", error);
         }
     };
 
-    const toggleDoneTodo = async (id: string, done: boolean) => {
+    const toggleDoneTodo = async (id: string, done: boolean): Promise<void> => {
         try {
             await db.collection("todos").doc(id).update({ done: done });
-            setTodos((prevTodos) =>
-                prevTodos.map((todo) =>
+            setTodos((prevTodos: Todo[]) =>
+                prevTodos.map((todo: Todo) =>
                     todo.id === id ? { ...todo, done: done } : todo
                 )
             );
@@ -73,20 +55,20 @@ function App() {
         }
     };
 
-    const handleDeleteTodo = async (id: string) => {
+    const handleDeleteTodo = async (id: string): Promise<void> => {
         try {
             await db.collection("todos").doc(id).delete();
-            setTodos((prevTodos) => prevTodos.filter((todo) => todo.id !== id));
+            setTodos((prevTodos: Todo[]) => prevTodos.filter((todo: Todo): boolean => todo.id !== id));
         } catch (error) {
             console.error("Error deleting todo: ", error);
         }
     };
 
-    const handleSaveTodo = async (id: string, newName: string) => {
+    const handleSaveTodo = async (id: string, newName: string): Promise<void> => {
         try {
             await db.collection("todos").doc(id).update({ name: newName });
-            setTodos((prevTodos) =>
-                prevTodos.map((todo) =>
+            setTodos((prevTodos: Todo[]) =>
+                prevTodos.map((todo: Todo) =>
                     todo.id === id ? { ...todo, name: newName } : todo
                 )
             );
@@ -95,9 +77,9 @@ function App() {
         }
     };
 
-    const summaryTodos = useMemo(() => todos, [todos]);
+    const summaryTodos: Todo[] = useMemo(() => todos, [todos]);
 
-    const redirectToGithub = () => {
+    const redirectToGithub = (): void => {
         window.location.href = "https://github.com/Skywhisp";
     };
 

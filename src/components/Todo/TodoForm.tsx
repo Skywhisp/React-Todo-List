@@ -10,9 +10,9 @@ const TodoForm: React.FC<TodoFormProps> = ({ handleSubmit }) => {
     const [newTodoName, setNewTodoName] = useState("");
     const [error, setError] = useState(false);
 
-    const handleFormSubmit = (e: FormEvent<HTMLFormElement>) => {
+    const handleFormSubmit = (e: FormEvent<HTMLFormElement>): void => {
         e.preventDefault();
-        const value = newTodoName.trim();
+        const value: string = newTodoName.trim();
         if (value === "") {
             setError(true);
         } else {
@@ -22,7 +22,7 @@ const TodoForm: React.FC<TodoFormProps> = ({ handleSubmit }) => {
         }
     };
 
-    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
         setNewTodoName(e.target.value);
         setError(false);
     };

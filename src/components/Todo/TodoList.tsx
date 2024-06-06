@@ -16,12 +16,12 @@ interface TodoListProps {
 }
 
 const TodoList: React.FC<TodoListProps> = ({ todos, toggleDone, handleDelete, handleSave }) => {
-    const sortedTodos = useMemo(() => [...todos].sort((a, b) => (a.done && !b.done
+    const sortedTodos: Todo[] = useMemo(() => [...todos].sort((a: Todo, b: Todo): number => (a.done && !b.done
         ? 1 : b.done && !a.done ? -1 : 0)), [todos]);
 
     return (
         <Box>
-            {sortedTodos.map((todo, index) => (
+            {sortedTodos.map((todo: Todo, index: number) => (
                 <TodoItem
                     key={todo.id}
                     name={todo.name}
@@ -29,7 +29,7 @@ const TodoList: React.FC<TodoListProps> = ({ todos, toggleDone, handleDelete, ha
                     toggleDone={() => toggleDone(todo.id, !todo.done)}
                     handleDelete={() => handleDelete(todo.id)}
                     number={index + 1}
-                    setName={(newName) => handleSave(todo.id, newName)}
+                    setName={(newName: string) => handleSave(todo.id, newName)}
                 />
             ))}
         </Box>
